@@ -27,7 +27,7 @@ from langchain_postgres import PostgresChatMessageHistory
 import psycopg
 
 # Importar tools desde la carpeta tools/
-from tools.Base_de_conocimiento import buscar_datapath
+from tools.Base_de_conocimiento import buscar_informacion_tramites
 from tools.Busqueda_internet import buscar_internet
 from tools.Hora_y_fecha import obtener_fecha_hora
 
@@ -54,7 +54,7 @@ print(f"🔌 Conectando como: {DB_USER}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
 # 2. LISTA DE TOOLS DISPONIBLES
 # ============================================
 tools = [
-    buscar_datapath,      # Base de conocimiento DATAPATH
+    buscar_informacion_tramites,      # Base de conocimiento DATAPATH
     buscar_internet,      # Búsqueda en internet (Tavily)
     obtener_fecha_hora,   # Fecha y hora actual por zona horaria
 ]
@@ -62,7 +62,7 @@ tools = [
 # ============================================
 # 3. CONFIGURACIÓN DEL MODELO CON TOOLS
 # ============================================
-chat = init_chat_model("gpt-4.1", temperature=0.7)
+chat = init_chat_model("gpt-4.1", temperature=0.7) #gpt-o4-mini
 chat_con_tools = chat.bind_tools(tools)
 
 # ============================================
@@ -81,16 +81,22 @@ def _contexto_fecha_hora() -> str:
     return now.strftime("%Y-%m-%d %H:%M:%S") + f" (zona {AGENT_TIMEZONE})"
 
 
-system_prompt = """Eres DataBot, un asistente de IA de DATAPATH con acceso a internet.
+system_prompt = """
+<Rol>
+Eres DataBot, un asistente de IA de DATAPATH con acceso a internet.
+</Rol>
 
+<Objetivo>
 Tu objetivo es ayudar a los usuarios respondiendo sus preguntas usando las herramientas disponibles.
+</Objetivo>
 
 Al inicio de cada turno se te indica la FECHA Y HORA ACTUAL; úsala siempre que la respuesta dependa de "hoy", "ahora", "esta semana", horarios o plazos. Para otras zonas horarias usa la tool obtener_fecha_hora.
 
-HERRAMIENTAS DISPONIBLES:
+<Herramientas Disponibles>
 1. buscar_datapath: Para información sobre DATAPATH (programas, cursos, precios, docentes)
 2. buscar_internet: Para información actualizada de internet (noticias, eventos, datos actuales)
 3. obtener_fecha_hora: Para la fecha y hora actual (por defecto zona del agente; opcional otra zona, ej. America/Lima, Europe/Madrid)
+</Herramientas Disponibles
 
 INSTRUCCIONES:
 - Para preguntas sobre DATAPATH → USA buscar_datapath

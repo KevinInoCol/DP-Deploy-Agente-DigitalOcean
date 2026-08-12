@@ -19,19 +19,19 @@ load_dotenv(find_dotenv())
 # CONFIGURACIÓN DE SUPABASE
 # ============================================
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+SUPABASE_KEY = os.getenv("SUPABASE_SECRET_KEY")
 
 if not all([SUPABASE_URL, SUPABASE_KEY]):
     raise ValueError(
         "❌ Faltan variables de Supabase en .env\n"
-        "Requeridas: SUPABASE_URL, SUPABASE_SERVICE_KEY"
+        "Requeridas: SUPABASE_URL, SUPABASE_SECRET_KEY"
     )
 
 supabase_client = create_client(SUPABASE_URL, SUPABASE_KEY)
 embedding_model = OpenAIEmbeddings(model='text-embedding-ada-002')
 
 # Nombre de la tabla de documentos
-TABLA_DOCUMENTOS = "documents_langchain_asistente_de_ventas"
+TABLA_DOCUMENTOS = "documents_langchain_asistente_de_informacion"
 
 
 # ============================================
@@ -104,15 +104,15 @@ def buscar_en_base_conocimiento_interno(query: str, top_k: int = 5) -> str:
 # TOOL EXPORTABLE
 # ============================================
 @tool
-def buscar_datapath(consulta: str) -> str:
+def buscar_informacion_tramites(consulta: str) -> str:
     """
-    Busca información sobre DATAPATH en la base de conocimientos.
+    Busca información sobre TRAMITES en la base de conocimientos.
     Usa esta herramienta cuando el usuario pregunte sobre:
-    - Programas de DATAPATH
-    - Cursos y contenidos
-    - Docentes e instructores
-    - Precios y modalidades
-    - Cualquier información relacionada con DATAPATH
+    - Los requisitos.
+    - Propósitos.
+    - Tiempos de respuesta.
+    - Costos y cuentas bancarias de los trámites administrativos.
+    y toda información oficial ante las distintas secretarias del Municipio de Girardota, Colombia.
     
     Args:
         consulta: La pregunta o tema a buscar
