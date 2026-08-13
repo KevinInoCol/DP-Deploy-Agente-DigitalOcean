@@ -281,11 +281,11 @@ async def chatwoot_webhook(request: Request):
 def read_root():
     """Endpoint raíz con información del servicio."""
     return {
-        "service": "DataBot - Agente IA",
+        "service": "Asistente Virtual de Girardota",
         "version": "1.0.0",
-        "agent": "Agente D (RAG + Internet + Memoria)",
+        "agent": "Trámites municipales (RAG + Internet + Memoria)",
         "model": "GPT-4.1",
-        "tools": ["buscar_datapath", "buscar_internet", "obtener_fecha_hora"],
+        "tools": ["buscar_informacion_tramites", "buscar_internet", "obtener_fecha_hora"],
         "chatwoot_configured": all([CHATWOOT_BASE_URL, CHATWOOT_ACCOUNT_ID, CHATWOOT_API_TOKEN]),
         "bot_label": BOT_LABEL,
         "status": "ready"
@@ -344,11 +344,11 @@ async def test_agent(request: Request):
 if __name__ == "__main__":
     print()
     print("=" * 60)
-    print("🚀 INICIANDO DATABOT CON CHATWOOT")
+    print("🚀 INICIANDO ASISTENTE DE TRÁMITES CON CHATWOOT")
     print("=" * 60)
-    print(f"🤖 Agente: D (RAG + Internet + Memoria)")
+    print(f"🤖 Agente: Trámites Girardota (RAG + Internet + Memoria)")
     print(f"🧠 Modelo: GPT-4.1")
-    print(f"🔧 Tools: buscar_datapath, buscar_internet, obtener_fecha_hora")
+    print(f"🔧 Tools: buscar_informacion_tramites, buscar_internet, obtener_fecha_hora")
     print(f"💾 Historial: PostgreSQL")
     print(f"🏷️  Etiqueta bot (handoff): {BOT_LABEL or 'ninguna'}")
     print(f"🚫 No responde si tiene tag: {TAG_IA_OFF}")
